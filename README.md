@@ -1,6 +1,6 @@
 # AzureCLI-CreateVM
 
-Este é um simples script em bash que pode ajudar a simplificar a criação de uma VM em ambiente Azure através da CLI Linux.
+Este é um simples script(CriarVM.sh) em bash que pode ajudar a simplificar a criação de uma VM em ambiente Azure através da CLI Linux.
 Você pode executar este script tanto de um S.O Windows,Linux,MacOS ou CloudShell no portal Azure.
 
 Ao final deste deploy via CLI, você deverá ter os seguintes recursos implantados:
