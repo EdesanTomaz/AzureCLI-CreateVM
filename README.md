@@ -1,9 +1,10 @@
 # AzureCLI - Criando um ambiente via ShellScript
-
-Este é um simples script em bash que pode ajudar a simplificar a criação de ambiente com uma VM em Azure através da CLI.<br><br><br>
 - Criadores <br>
 Alan Correia<br>
 [André Terasaka](https://github.com/terasaka)<br><br>
+
+Este é um simples script em bash que pode ajudar a simplificar a criação de ambiente com uma VM em Azure através da CLI.<br><br><br>
+
 
 Você pode executar este script tanto de um S.O Windows,Linux,MacOS ou CloudShell no portal Azure.
 
