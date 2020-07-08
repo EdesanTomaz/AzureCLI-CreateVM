@@ -33,7 +33,7 @@ Necessário dar permissão de execução ao script<br>
 Encontre sua SubscriptionID no painel de subscrições da Azure<br>
 ![alt text](https://github.com/alancorreia/AzureCLI-CreateVM/blob/master/img/azureshell4.png?raw=true) <br><br>
 Vamos editar o script. Você pode apenas editar a Subscription ou todas as variáveis para o ambiente<br>
-![alt text](https://github.com/alancorreia/AzureCLI-CreateVM/blob/master/img/azureshell3.png?raw=true)
+![alt text](https://github.com/alancorreia/AzureCLI-CreateVM/blob/master/img/azureshell3.png?raw=true)<br>
 ![alt text](https://github.com/alancorreia/AzureCLI-CreateVM/blob/master/img/azureshell5.png?raw=true)<br><br>
 Após alterado o script e salvo, executaremos da seguinte forma<br>
 ![alt text](https://github.com/alancorreia/AzureCLI-CreateVM/blob/master/img/azureshell6.png?raw=true)<br><br>
