@@ -8,7 +8,10 @@ Este é um simples script em bash que pode ajudar a simplificar a criação de a
 
 Você pode executar este script tanto de um S.O Windows,Linux,MacOS ou CloudShell no portal Azure.
 
-O conteudo necessário está no script CriarVM.sh. Devemos apenas alterar as variaveis comentadas nele antes da execução.
+
+O conteudo necessário está no script CriarVM.sh. Devemos apenas alterar as variaveis comentadas nele antes da execução.<br><br>
+
+![arch](https://github.com/alancorreia/AzureCLI-CreateVM/blob/master/img/Lab%20Github.png?raw=true)
 Ao final deste deploy via CLI, você deverá ter os seguintes recursos implantados:
 
 #### - ResourceGroup
