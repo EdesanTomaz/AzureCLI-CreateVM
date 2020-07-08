@@ -15,35 +15,73 @@ subscription=000aaaaa-000aaa-000aa-000aaaaaaa
 Size=Standard_D2s_v3
 #Sistema Operacional da VM
 SO=win2016datacenter
-#Localização
+#Localização dos recursos
 location="Brazil South"
 #Tag
 tagOwner="Master"
 #Nome da VM
-VMname=GitVM
+VMname=LabGitVM
 #VNet em que será implantada a VM
-RGVnet=NOMEDORESOURCEGRUPDAVNET
-SubnetName=NOMEDASUBNET
-VnetName=NOMEDAVNET
+vnetAddress=10.0.0.0/16
+subnetAddress=10.0.0.0/24
+vnetName=Vnet-Lab-Git
+subnetName=Subnet-Lab-Git
+nsgSubnetName=NSG-Subnet-Lab-Git
 #Tamanho e tipo de discos da VM
 SOdisk=128
 Datadisk=30
 SOdisksku=Premium_LRS
 Datadisksku=StandardSSD_LRS
 
-echo "Confirmando SubnetID"
-subnetId=$(az network vnet subnet show \
---resource-group $RGVnet --name $SubnetName \
---vnet-name $VnetName --query id -o tsv)
+
+echo "Criando ResourceGroup"
+az group create -l "$location" -n $ResourceGroup --subscription $subscription \
+--tags Owner="$tagOwner"
 if [ "$?" -ne "0" ];
 then
 exit 1
 break
 fi
 
-echo "Criando ResourceGroup"
-az group create -l "$location" -n $ResourceGroup --subscription $subscription \
---tags Owner="$tagOwner"
+echo "Criando Vnet"
+az network vnet create \
+  --resource-group $ResourceGroup \
+  --location "$location" \
+  --address-prefix $vnetAddress \
+  --name $vnetName
+if [ "$?" -ne "0" ];
+then
+exit 1
+break
+fi
+
+echo "Criando NSG para Subnet"
+az network nsg create \
+  --resource-group $ResourceGroup \
+  --name $nsgSubnetName
+if [ "$?" -ne "0" ];
+then
+exit 1
+break
+fi
+
+echo "Criando Subnet"
+az network vnet subnet create \
+  --resource-group $ResourceGroup \
+  --vnet-name $vnetName \
+  --name $subnetName \
+  --address-prefixes $subnetAddress \
+  --network-security-group $nsgSubnetName
+if [ "$?" -ne "0" ];
+then
+exit 1
+break
+fi
+
+echo "Confirmando SubnetID"
+subnetId=$(az network vnet subnet show \
+--resource-group $ResourceGroup --name $subnetName \
+--vnet-name $vnetName --query id -o tsv)
 if [ "$?" -ne "0" ];
 then
 exit 1
@@ -113,6 +151,29 @@ exit 1
 break
 fi
 
+echo "Verificando SourceIP"
+sourceIp=$(curl ifconfig.me)
+if [ "$?" -ne "0" ];
+then
+exit 1
+break
+fi
+
+echo "Criando regra para acesso externo a porta 3389(RDP)"
+az network nsg rule create \
+  --resource-group $ResourceGroup \
+  --nsg-name $nsgSubnetName \
+  --name Allow-Source-Home \
+  --priority 300 \
+  --source-address-prefixes $sourceIp/32 --source-port-ranges '*' \
+  --destination-address-prefixes '*' --destination-port-ranges 3389 --access Allow \
+  --protocol Tcp --description "Allow RDP from my home"
+if [ "$?" -ne "0" ];
+then
+exit 1
+break
+fi
+
 echo "Criando Vault de Backup"
 az backup vault create --resource-group $ResourceGroup \
     --name $ResourceGroup-Vault \
@@ -161,9 +222,10 @@ break
 fi
 echo "Validando instalacao"
 Resultdeploy=$(az vm show -g $ResourceGroup -n $VMname --show-details --query 'powerState' -o tsv)
+PubIPshow=$(az vm show -d -g $ResourceGroup -n $VMname --query 'publicIps' -o tsv)
 echo $Resultdeploy
 if [ "$Resultdeploy" == "VM running" ]; then
-    echo "Deploy daS VM $VMname concluida"
+    echo "Deploy da VM $VMname concluida. Para acessar utilize o IP $PubIPshow"
 else
     echo  "Erro no deploy da VM $VMname "
 fi
