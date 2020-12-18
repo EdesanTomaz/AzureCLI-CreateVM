@@ -185,7 +185,7 @@ break
 fi
 
 echo "Baixando template de Policy Backup"
-wget -q https://raw.githubusercontent.com/alancorreia/AzureCLI-CreateVM/master/policy-backup-azure.json -O policy-backup-azure.json
+wget -q https://raw.githubusercontent.com/EdesanTomaz/AzureCLI-CreateVM/master/policy-backup-azure.json -O policy-backup-azure.json
 if [ "$?" -ne "0" ];
 then
 exit 1
